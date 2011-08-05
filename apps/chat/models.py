@@ -111,7 +111,7 @@ class RoomsUserIsIn(object):
 
     def leave_all(self):
         """Leave all rooms."""
-        # Can't use iterkeys(): _leave_rooms() mutates subscribers.
+        # Can't use iterkeys(): leave() mutates subscribers.
         for room in self._subscribers.keys():
             self.leave(room)
 
