@@ -18,14 +18,11 @@ def nonce_key(nonce):
     return 'chatnonce:{n}'.format(n=nonce)
 
 
-class Safe(object):
+class Safe(unicode):
     """Wrapper that declares a string to not need HTML-scrubbing before JSON
     encoding"""
     # Think about writing a custom JSONEncoder subclass someday. I found it
     # unacceptably painful, though.
-    def __init__(self, string):
-        self._inner_string = string
-
     @classmethod
     def escape(cls, obj):
         """HTML-escape an object unless it's wrapped in Safe().
@@ -33,8 +30,6 @@ class Safe(object):
         Turn Safe instances into strings so JSON encoder doesn't trip on them.
 
         """
-        if isinstance(obj, basestring):
+        if isinstance(obj, basestring) and not isinstance(obj, cls):
             return clean(obj, tags=[])
-        elif isinstance(obj, cls):
-            return obj._inner_string
         return obj
